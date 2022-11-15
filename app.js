@@ -39,11 +39,12 @@ const Article = mongoose.model("Article", articlesSchema)
 app.get("/articles", function(req, res){
   Article.find(function(err, foundArticles){
   // equals to Article.find({}, function(err, allArticles){
-    if (!err){
-      res.send(foundArticles);
-    } else {
-      res.send(err);
-    }
+  if (!err){
+    // res.send(foundArticles);
+    res.render("index", {articles: foundArticles});
+  } else {
+    res.send(err);
+  }
   });
 });
 

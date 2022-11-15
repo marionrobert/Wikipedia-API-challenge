@@ -5,6 +5,10 @@
     <title>Wikipedia API challenge</title>
   </head>
   <body>
-
+    <% articles.forEach(function(article){ %>
+      <h1> <%= article.title%> </h1>
+      <p> <%= article.content.substring(0, 100) + " ..."%> <a href="/">Read More</a>
+      </p>
+    <% }); %>
   </body>
 </html>
