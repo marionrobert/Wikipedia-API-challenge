@@ -1,3 +1,4 @@
+
 const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
@@ -29,3 +30,8 @@ const articlesSchema = {
 
 // create the model based on the schema
 const Article = mongoose.model("Article", articlesSchema)
+
+
+app.listen(3000, function(){
+  console.log("Server started on port 3000");
+});
