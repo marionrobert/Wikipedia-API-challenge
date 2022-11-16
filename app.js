@@ -35,6 +35,8 @@ const articlesSchema = {
 // create the model based on the schema
 const Article = mongoose.model("Article", articlesSchema)
 
+
+// requests targetting all articles
 app.route("/articles")
   // get all articles
   .get(function(req, res){
@@ -76,6 +78,21 @@ app.route("/articles")
       }
     });
   });
+
+
+// requests targetting a specific article
+app.route("/articles/:articleTitle")
+  // get the specific article
+  .get(function(req,res){
+    Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
+      if (!err) {
+        res.send(foundArticle);
+      } else {
+        res.send("No article matches your request.");
+      }
+    });
+  });
+
 
 
 // set app to listen on port 3000
