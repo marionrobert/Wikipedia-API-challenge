@@ -40,14 +40,15 @@ app.get("/articles", function(req, res){
   Article.find(function(err, foundArticles){
   // equals to Article.find({}, function(err, allArticles){
   if (!err){
-    // res.send(foundArticles);
-    res.render("index", {articles: foundArticles});
+    res.send(foundArticles);
+    // res.render("index", {articles: foundArticles});
   } else {
     res.send(err);
   }
   });
 });
 
+// create one new article
 app.post("/articles", function(req, res){
   const newArticle = new Article({
     title: req.body.title,
@@ -62,6 +63,18 @@ app.post("/articles", function(req, res){
   });
 });
 
+
+// delete all articles
+app.delete("/articles", function(req, res){
+  // equals to Article.deleteMany({}, function(err){
+  Article.deleteMany(function(err){
+    if (!err) {
+      res.send("Successfully deleted all articles.");
+    } else {
+      res.send(err);
+    }
+  });
+});
 
 // set app to listen on port 3000
 app.listen(3000, function(){
