@@ -35,46 +35,48 @@ const articlesSchema = {
 // create the model based on the schema
 const Article = mongoose.model("Article", articlesSchema)
 
-// get all articles
-app.get("/articles", function(req, res){
-  Article.find(function(err, foundArticles){
-  // equals to Article.find({}, function(err, allArticles){
-  if (!err){
-    res.send(foundArticles);
-    // res.render("index", {articles: foundArticles});
-  } else {
-    res.send(err);
-  }
-  });
-});
-
-// create one new article
-app.post("/articles", function(req, res){
-  const newArticle = new Article({
-    title: req.body.title,
-    content: req.body.content
-  });
-  newArticle.save(function(err){
-    if (!err) {
-      res.send("Successfully added the new article.")
+app.route("/articles")
+  // get all articles
+  .get(function(req, res){
+    Article.find(function(err, foundArticles){
+    // equals to Article.find({}, function(err, allArticles){
+    if (!err){
+      res.send(foundArticles);
+      // res.render("index", {articles: foundArticles});
     } else {
       res.send(err);
     }
-  });
-});
+    });
+  })
+  // up, no ;, it's not the end of the main method cause these are chained methods
 
+  // create one new article
+  .post(function(req, res){
+    const newArticle = new Article({
+      title: req.body.title,
+      content: req.body.content
+    });
+    newArticle.save(function(err){
+      if (!err) {
+        res.send("Successfully added the new article.")
+      } else {
+        res.send(err);
+      }
+    });
+  })
 
-// delete all articles
-app.delete("/articles", function(req, res){
-  // equals to Article.deleteMany({}, function(err){
-  Article.deleteMany(function(err){
-    if (!err) {
-      res.send("Successfully deleted all articles.");
-    } else {
-      res.send(err);
-    }
+  // delete all articles
+  .delete(function(req, res){
+    // equals to Article.deleteMany({}, function(err){
+    Article.deleteMany(function(err){
+      if (!err) {
+        res.send("Successfully deleted all articles.");
+      } else {
+        res.send(err);
+      }
+    });
   });
-});
+
 
 // set app to listen on port 3000
 app.listen(3000, function(){
