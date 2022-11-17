@@ -18,7 +18,8 @@ app.use(express.static("public"));
 
 // connect app.js to the DB and create it if doesn't exist
 // with property useNewUrlParser to get rid of the errors given by MongoDB
-mongoose.connect("mongodb://localhost:27017/wikiDB", {useNewUrlParser: true});
+// mongoose.connect("mongodb://localhost:27017/wikiDB", {useNewUrlParser: true});
+mongoose.connect("mongodb://localhost:27017/wikiDB");
 
 // create the schemas
 const articlesSchema = {
@@ -98,11 +99,24 @@ app.route("/articles/:articleTitle")
       {title: req.params.articleTitle}, //conditions
       {title: req.body.title, content: req.body.content}, //updates
       {overwrite: true},
-      function(err, results){
-        if (!err){
+      function (err, results) {
+        if (!err) {
           res.send("Successfully updated article.");
           console.log(results);
         }
+      }
+    );
+  })
+
+  .delete(function(req,res){
+    Article.deleteOne(
+      {title: req.params.articleTitle},
+      function (err, result) {
+        if (!err) {
+          res.send("Article successfuly deleted")
+        } else {
+          res.send(err);
+        };
       }
     );
   });
