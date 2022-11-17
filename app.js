@@ -94,8 +94,10 @@ app.route("/articles/:articleTitle")
   })
 
   .put(function(req, res){
+    // replace the all element, if you don't give all arguments (ex: only title),
+    // it will be blanked (new title ok, and content: blanked)
     Article.replaceOne(
-      {title: req.params.articleTitle}, //conditions
+      {title: req.params.articleTitle}, //conditions = find the article
       {title: req.body.title, content: req.body.content}, //updates
       {overwrite: true},
       function(err, results){
@@ -105,6 +107,21 @@ app.route("/articles/:articleTitle")
         }
       }
     );
+  })
+
+  .patch(function(req, res){
+    Article.updateOne(
+      {title: req.params.articleTitle}, //conditions = find the article
+      {$set: req.body}, //with set flag, updates only the fields that have values in the request's body
+      function(err){
+        if (!err){
+          res.send("Successfully updated article.");
+          // res.send("Successfully updated article.")
+        } else {
+          res.send(err);
+        }
+      }
+    )
   });
 
 
