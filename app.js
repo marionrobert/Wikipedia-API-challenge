@@ -95,8 +95,10 @@ app.route("/articles/:articleTitle")
   })
 
   .put(function(req, res){
+    // replace the all element, if you don't give all arguments (ex: only title),
+    // it will be blanked (new title ok, and content: blanked)
     Article.replaceOne(
-      {title: req.params.articleTitle}, //conditions
+      {title: req.params.articleTitle}, //conditions = find the article
       {title: req.body.title, content: req.body.content}, //updates
       {overwrite: true},
       function (err, results) {
