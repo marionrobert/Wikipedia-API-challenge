@@ -36,7 +36,7 @@ const articlesSchema = {
 const Article = mongoose.model("Article", articlesSchema)
 
 
-// requests targetting all articles
+// REQUESTS TARGETTING ALL ARTICLES
 app.route("/articles")
   // get all articles
   .get(function(req, res){
@@ -80,17 +80,31 @@ app.route("/articles")
   });
 
 
-// requests targetting a specific article
+// REQUESTS TARGETTING A SPECIFIC ARTICLE
 app.route("/articles/:articleTitle")
   // get the specific article
-  .get(function(req,res){
+  .get(function(req, res){
     Article.findOne({title: req.params.articleTitle}, function(err, foundArticle){
-      if (!err) {
+      if (foundArticle) {
         res.send(foundArticle);
       } else {
         res.send("No article matches your request.");
       }
     });
+  })
+
+  .put(function(req, res){
+    Article.replaceOne(
+      {title: req.params.articleTitle}, //conditions
+      {title: req.body.title, content: req.body.content}, //updates
+      {overwrite: true},
+      function(err, results){
+        if (!err){
+          res.send("Successfully updated article.");
+          console.log(results);
+        }
+      }
+    );
   });
 
 
